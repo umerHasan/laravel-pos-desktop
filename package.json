@@ -1,0 +1,20 @@
+{
+  "name": "app.airmax.ai",
+  "version": "1.0.0",
+  "description": "Ultimate POS is a POS application by [Ultimate Fosters](http://ultimatefosters.com), a brand of [The Web Fosters](http://thewebfosters.com).",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "laravel-echo": "^2.1.5",
+    "pusher-js": "^8.4.0"
+  }
+}
