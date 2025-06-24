@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('user_type')->default('user')->index()->after('id');
-        });
+        if (! Schema::hasColumn('users', 'user_type')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->string('user_type')->default('user')->index()->after('id');
+            });
+        }
     }
 
     /**

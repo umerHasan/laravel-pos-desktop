@@ -14,10 +14,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('business', function (Blueprint $table) {
-            $table->integer('created_by')->nullable()->after('ref_no_prefixes');
-            $table->boolean('is_active')->default(true)->after('created_by');
-        });
+        if (! Schema::hasColumn('business', 'created_by')) {
+            Schema::table('business', function (Blueprint $table) {
+                $table->integer('created_by')->nullable()->after('ref_no_prefixes');
+                $table->boolean('is_active')->default(true)->after('created_by');
+            });
+        }
 
         DB::table('system')->insert(['key' => 'default_business_active_status', 'value' => 1]);
     }

@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('business', function (Blueprint $table) {
-            $table->char('theme_color', 20)->nullable()->after('ref_no_prefixes');
-        });
+        if (! Schema::hasColumn('business', 'theme_color')) {
+            Schema::table('business', function (Blueprint $table) {
+                $table->char('theme_color', 20)->nullable()->after('ref_no_prefixes');
+            });
+        }
     }
 
     /**

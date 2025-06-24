@@ -13,10 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('alt_number')->nullable()->after('contact_number');
-            $table->string('family_number')->nullable()->after('alt_number');
-        });
+        if (! Schema::hasColumn('users', 'alt_number')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->string('alt_number')->nullable()->after('contact_number');
+                $table->string('family_number')->nullable()->after('alt_number');
+            });
+        }
     }
 
     /**
