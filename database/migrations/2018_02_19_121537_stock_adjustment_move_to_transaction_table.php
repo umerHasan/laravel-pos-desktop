@@ -14,11 +14,9 @@ return new class extends Migration
      */
     public function up()
     {
-        DB::statement("ALTER TABLE `transactions` CHANGE `type` `type` ENUM('purchase','sell','expense','stock_adjustment') DEFAULT NULL");
+        // type column stored as varchar from the beginning, so no alteration needed
 
-        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-
-        DB::statement('DROP TABLE IF EXISTS stock_adjustment_lines');
+        Schema::dropIfExists('stock_adjustment_lines');
 
         Schema::create('stock_adjustment_lines', function (Blueprint $table) {
             $table->increments('id');
@@ -42,11 +40,12 @@ return new class extends Migration
             $table->decimal('total_amount_recovered', 22, 4)->comment('Used for stock adjustment.')->nullable()->after('exchange_rate');
         });
 
-        //Create & Rename stock_adjustment table.
-        DB::statement('CREATE TABLE IF NOT EXISTS `stock_adjustments` (`id` int(11) DEFAULT NULL) ');
+        //Create & Rename stock_adjustment table without raw SQL
+        Schema::create('stock_adjustments', function (Blueprint $table) {
+            $table->increments('id');
+        });
         Schema::rename('stock_adjustments', 'stock_adjustments_temp');
 
-        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 
     /**

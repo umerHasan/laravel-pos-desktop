@@ -12,8 +12,12 @@ return new class extends Migration
      */
     public function up()
     {
-        DB::statement('ALTER TABLE business MODIFY COLUMN p_exchange_rate DECIMAL(20, 3) NOT NULL DEFAULT 1');
-        DB::statement('ALTER TABLE transactions MODIFY COLUMN exchange_rate DECIMAL(20,3) NOT NULL DEFAULT 1');
+        Schema::table('business', function ($table) {
+            $table->decimal('p_exchange_rate', 20, 3)->default(1)->change();
+        });
+        Schema::table('transactions', function ($table) {
+            $table->decimal('exchange_rate', 20, 3)->default(1)->change();
+        });
 
         //Update 0 to 1
         DB::table('transactions')
