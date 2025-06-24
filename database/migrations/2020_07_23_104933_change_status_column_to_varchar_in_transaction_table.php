@@ -13,7 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        DB::statement('ALTER TABLE transactions MODIFY COLUMN `status` VARCHAR(191) NOT NULL;');
+        Schema::table('transactions', function ($table) {
+            $table->string('status')->change();
+        });
 
         Transaction::where('type', 'sell_transfer')
                 ->update(['status' => 'final']);
