@@ -17,8 +17,11 @@ return new class extends Migration
             $table->increments('id');
             $table->integer('business_id')->unsigned();
             $table->foreign('business_id')->references('id')->on('business')->onDelete('cascade');
-            $table->enum('type', ['purchase','sell', 'expense']);
-            $table->enum('status', ['received', 'pending', 'ordered', 'draft', 'final']);
+            $table->unsignedInteger('location_id')->nullable();
+            $table->foreign('location_id')->references('id')->on('business_locations');
+            // store transaction type and status as varchar to avoid later ALTER statements
+            $table->string('type')->nullable();
+            $table->string('status')->nullable();
             $table->enum('payment_status', ['paid', 'due', 'partial']);
             $table->integer('contact_id')->unsigned()->nullable();
             $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
@@ -41,6 +44,7 @@ return new class extends Migration
             $table->foreign('expense_category_id')->references('id')->on('expense_categories')->onDelete('cascade');
             $table->integer('expense_for')->nullable()->unsigned();
             $table->foreign('expense_for')->references('id')->on('users')->onDelete('cascade');
+            $table->decimal('exchange_rate', 20, 3)->default(1);
 
             $table->index('expense_category_id');
             
@@ -51,6 +55,7 @@ return new class extends Migration
             //Indexing
             $table->index('business_id');
             $table->index('type');
+            $table->index('location_id');
             $table->index('contact_id');
             $table->index('transaction_date');
             $table->index('created_by');

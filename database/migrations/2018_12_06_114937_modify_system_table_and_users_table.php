@@ -15,9 +15,11 @@ return new class extends Migration
     public function up()
     {
         // DB::statement("ALTER TABLE system MODIFY COLUMN `value` VARCHAR(191) DEFAULT NULL");
-        Schema::table('users', function (Blueprint $table) {
-            $table->enum('status', ['active', 'inactive', 'terminated'])->default('active')->after('business_id');
-        });
+        if (! Schema::hasColumn('users', 'status')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->enum('status', ['active', 'inactive', 'terminated'])->default('active')->after('business_id');
+            });
+        }
     }
 
     /**

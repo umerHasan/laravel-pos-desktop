@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->decimal('max_sales_discount_percent', 5, 2)->nullable()->after('business_id');
-        });
+        if (! Schema::hasColumn('users', 'max_sales_discount_percent')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->decimal('max_sales_discount_percent', 5, 2)->nullable()->after('business_id');
+            });
+        }
     }
 
     /**

@@ -14,14 +14,19 @@ return new class extends Migration
      */
     public function up()
     {
-        DB::statement('ALTER TABLE users MODIFY COLUMN surname CHAR(10)');
+        if (! Schema::hasColumn('users', 'contact_no')) {
+            // Modify surname length only if using MySQL
+            if (Schema::getConnection()->getDriverName() !== 'sqlite') {
+                DB::statement('ALTER TABLE users MODIFY COLUMN surname CHAR(10)');
+            }
 
-        Schema::table('users', function (Blueprint $table) {
-            $table->char('contact_no', 15)->nullable()->after('language');
-            $table->text('address')->nullable()->after('contact_no');
-            $table->boolean('is_cmmsn_agnt')->default(0)->after('business_id');
-            $table->decimal('cmmsn_percent', 4, 2)->default(0)->after('is_cmmsn_agnt');
-        });
+            Schema::table('users', function (Blueprint $table) {
+                $table->char('contact_no', 15)->nullable()->after('language');
+                $table->text('address')->nullable()->after('contact_no');
+                $table->boolean('is_cmmsn_agnt')->default(0)->after('business_id');
+                $table->decimal('cmmsn_percent', 4, 2)->default(0)->after('is_cmmsn_agnt');
+            });
+        }
     }
 
     /**

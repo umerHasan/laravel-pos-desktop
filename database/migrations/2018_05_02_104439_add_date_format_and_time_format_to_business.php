@@ -13,10 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('business', function (Blueprint $table) {
-            $table->string('date_format')->default('m/d/Y')->after('enabled_modules');
-            $table->enum('time_format', [12, 24])->default(24)->after('date_format');
-        });
+        if (! Schema::hasColumn('business', 'date_format')) {
+            Schema::table('business', function (Blueprint $table) {
+                $table->string('date_format')->default('m/d/Y')->after('enabled_modules');
+                $table->enum('time_format', [12, 24])->default(24)->after('date_format');
+            });
+        }
     }
 
     /**

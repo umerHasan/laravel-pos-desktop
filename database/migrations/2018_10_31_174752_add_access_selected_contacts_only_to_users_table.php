@@ -13,10 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->boolean('selected_contacts')->default(false)
-                ->after('cmmsn_percent');
-        });
+        if (! Schema::hasColumn('users', 'selected_contacts')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->boolean('selected_contacts')->default(false)
+                    ->after('cmmsn_percent');
+            });
+        }
     }
 
     /**

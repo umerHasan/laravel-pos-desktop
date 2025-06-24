@@ -14,12 +14,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->boolean('allow_login')->default(1)->after('business_id');
-        });
+        if (! Schema::hasColumn('users', 'allow_login')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->boolean('allow_login')->default(1)->after('business_id');
+            });
+        }
 
-        DB::statement('ALTER TABLE users CHANGE username username VARCHAR(191) NULL;');
-        DB::statement('ALTER TABLE users CHANGE password password VARCHAR(191) NULL;');
+        if (Schema::getConnection()->getDriverName() !== 'sqlite') {
+            DB::statement('ALTER TABLE users CHANGE username username VARCHAR(191) NULL;');
+            DB::statement('ALTER TABLE users CHANGE password password VARCHAR(191) NULL;');
+        }
     }
 
     /**

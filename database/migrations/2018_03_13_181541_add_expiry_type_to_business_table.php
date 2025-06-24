@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('business', function (Blueprint $table) {
-            $table->enum('expiry_type', ['add_expiry', 'add_manufacturing'])->after('enable_product_expiry')->default('add_expiry');
-        });
+        if (! Schema::hasColumn('business', 'expiry_type')) {
+            Schema::table('business', function (Blueprint $table) {
+                $table->enum('expiry_type', ['add_expiry', 'add_manufacturing'])->after('enable_product_expiry')->default('add_expiry');
+            });
+        }
     }
 
     /**

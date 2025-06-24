@@ -12,11 +12,17 @@ return new class extends Migration
      */
     public function up()
     {
-        DB::statement("ALTER TABLE purchase_lines MODIFY COLUMN quantity DECIMAL(22, 4) NOT NULL DEFAULT  '0'");
+        Schema::table('purchase_lines', function ($table) {
+            $table->decimal('quantity', 22, 4)->default(0)->change();
+        });
 
-        DB::statement("ALTER TABLE transaction_sell_lines MODIFY COLUMN quantity DECIMAL(22, 4) NOT NULL DEFAULT  '0'");
+        Schema::table('transaction_sell_lines', function ($table) {
+            $table->decimal('quantity', 22, 4)->default(0)->change();
+        });
 
-        DB::statement("ALTER TABLE transactions MODIFY COLUMN discount_amount DECIMAL(22, 4) DEFAULT  '0'");
+        Schema::table('transactions', function ($table) {
+            $table->decimal('discount_amount', 22, 4)->default(0)->change();
+        });
     }
 
     /**

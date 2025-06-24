@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('business', function (Blueprint $table) {
-            $table->text('custom_labels')->nullable()->after('sms_settings');
-        });
+        if (! Schema::hasColumn('business', 'custom_labels')) {
+            Schema::table('business', function (Blueprint $table) {
+                $table->text('custom_labels')->nullable()->after('sms_settings');
+            });
+        }
     }
 
     /**
